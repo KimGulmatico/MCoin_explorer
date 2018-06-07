@@ -20514,7 +20514,7 @@ MenuMenu.propTypes =  true ? {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export default */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Message; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_extends__ = __webpack_require__("./node_modules/semantic-ui-react/node_modules/@babel/runtime/helpers/extends.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_extends__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_classCallCheck__ = __webpack_require__("./node_modules/semantic-ui-react/node_modules/@babel/runtime/helpers/classCallCheck.js");
@@ -20978,7 +20978,7 @@ MessageList.create = Object(__WEBPACK_IMPORTED_MODULE_5__lib__["m" /* createShor
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Message__ = __webpack_require__("./node_modules/semantic-ui-react/dist/es/collections/Message/Message.js");
-/* unused harmony reexport default */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__Message__["a"]; });
 
 
 
@@ -25905,7 +25905,7 @@ StepTitle.create = Object(__WEBPACK_IMPORTED_MODULE_4__lib__["m" /* createShorth
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__collections_Menu_MenuMenu__ = __webpack_require__("./node_modules/semantic-ui-react/dist/es/collections/Menu/MenuMenu.js");
 /* unused harmony reexport MenuMenu */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__collections_Message__ = __webpack_require__("./node_modules/semantic-ui-react/dist/es/collections/Message/index.js");
-/* unused harmony reexport Message */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_32__collections_Message__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__collections_Message_MessageContent__ = __webpack_require__("./node_modules/semantic-ui-react/dist/es/collections/Message/MessageContent.js");
 /* unused harmony reexport MessageContent */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__collections_Message_MessageHeader__ = __webpack_require__("./node_modules/semantic-ui-react/dist/es/collections/Message/MessageHeader.js");
@@ -40797,14 +40797,16 @@ function (_React$Component) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                //9383deb8decad89faec764db2ab881358304b022
+                console.log(this.state.address);
                 this.setState({
                   loading: true,
                   response: null
                 });
-                _context.next = 3;
-                return __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get('http://localhost:3001/faucet/9383deb8decad89faec764db2ab881358304b022/10');
+                _context.next = 4;
+                return __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get('http://localhost:3001/faucet/' + this.state.address + '/10');
 
-              case 3:
+              case 4:
                 response = _context.sent;
                 console.log(response.data);
 
@@ -40812,17 +40814,29 @@ function (_React$Component) {
                   this.setState({
                     loading: false,
                     response: response.data,
-                    show: false
+                    show: false,
+                    render: true
                   });
+
+                  if (response.data === 'Request accepted!') {
+                    this.setState({
+                      positive: true
+                    });
+                  } else {
+                    this.setState({
+                      negative: true
+                    });
+                  }
+
                   setTimeout(function () {
                     //Start the timer
                     this.setState({
-                      render: true
+                      render: false
                     }); //After 1 second, set render to true
-                  }.bind(this), 1000);
+                  }.bind(this), 5000);
                 }
 
-              case 6:
+              case 7:
               case "end":
                 return _context.stop();
             }
@@ -40837,22 +40851,30 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var message = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(Message, {
-        positive: true,
+      var _this2 = this;
+
+      var message = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Message */], {
+        positive: this.state.positive,
+        negative: this.state.negative,
+        style: {
+          position: 'absolute',
+          top: 10,
+          'width': '700px'
+        },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 46
+          lineNumber: 59
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(Message.Header, {
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Message */].Header, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 47
+          lineNumber: 60
         }
       }, this.state.response));
       return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 51
+          lineNumber: 64
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
         rel: "stylesheet",
@@ -40861,14 +40883,14 @@ function (_React$Component) {
         crossOrigin: "anonymous",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 52
+          lineNumber: 65
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
         rel: "stylesheet",
         href: "//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 53
+          lineNumber: 66
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
         rel: "stylesheet",
@@ -40877,20 +40899,20 @@ function (_React$Component) {
         crossOrigin: "anonymous",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 54
+          lineNumber: 67
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
         href: "https://fonts.googleapis.com/css?family=Baloo+Chettan|Paytone+One",
         rel: "stylesheet",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 55
+          lineNumber: 68
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "container",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 56
+          lineNumber: 69
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "container",
@@ -40900,43 +40922,43 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 57
+          lineNumber: 70
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+      }, this.state.render ? message : null, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "row",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 58
+          lineNumber: 72
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "col-2",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 59
+          lineNumber: 73
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "col",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 61
+          lineNumber: 75
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "container",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 62
+          lineNumber: 76
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "row",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 63
+          lineNumber: 77
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "col-1",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 64
+          lineNumber: 78
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("i", {
         className: "fas fa-shower",
@@ -40945,13 +40967,13 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 65
+          lineNumber: 79
         }
       })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "col",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 67
+          lineNumber: 81
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("span", {
         style: {
@@ -40963,13 +40985,13 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 68
+          lineNumber: 82
         }
       }, "Mccoin Faucet"))))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "col-2",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 73
+          lineNumber: 87
         }
       })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "row",
@@ -40978,33 +41000,38 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 76
+          lineNumber: 90
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "row",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 78
+          lineNumber: 92
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "col",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 79
+          lineNumber: 93
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["b" /* Input */], {
         fluid: true,
         focus: true,
         disabled: this.state.loading,
+        onChange: function onChange(e) {
+          return _this2.setState({
+            address: e.target.value
+          });
+        },
         placeholder: "Address",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 80
+          lineNumber: 94
         }
       })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 82
+          lineNumber: 96
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["a" /* Button */], {
         secondary: true,
@@ -41012,7 +41039,7 @@ function (_React$Component) {
         onClick: this.requestMccoin,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 83
+          lineNumber: 97
         }
       }, "Send"))))));
     }
