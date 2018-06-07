@@ -1,64 +1,44 @@
 import React from 'react'
 import Router from 'next/router'
-import { Message, Input, Button } from 'semantic-ui-react'
+import {Button, Icon, Label, Menu, Table, Input } from 'semantic-ui-react'
 import axios from 'axios'
+import Link from 'next/link'
 
 export default class extends React.Component { 
   constructor (props) {
     super(props)
     this.state = { 
-      loading: false, 
+      blocks: [], 
+      page:10,
     }
-    this.requestMccoin = this.requestMccoin.bind(this);
+    this.getAllBlocks = this.getAllBlocks.bind(this);
     
   }
 
   // handling escape close
   componentDidMount () {
-   //this.requestMccoin();
+   this.getAllBlocks();
   }
 
   componentWillUnmount () {
    
   }
 
-  async requestMccoin() {
-      //9383deb8decad89faec764db2ab881358304b022
-      console.log(this.state.address);
-      this.setState({
-        loading: true,
-        response: null,
-      })
-      const response = await axios.get('http://localhost:3001/faucet/'+this.state.address+'/10');
-      console.log(response.data);
+  async getAllBlocks() {
+      const response = await axios.get('http://localhost:3001/blocks/');
       if(response){
-        this.setState({
-          loading: false,
-          response: response.data,
-          show: false,
-          render: true,
-        })
-        if(response.data === 'Request accepted!'){
-          this.setState({
-            positive: true,
-          })
-        }
-        else{
-          this.setState({
-            negative: true,
-          })
-        }
-        setTimeout(function() { //Start the timer
-            this.setState({render: false}) //After 1 second, set render to true
-        }.bind(this), 5000)
+      //console.log(response.data);
+      this.setState({
+        blocks: response.data,
+      })
+      console.log(this.state.blocks[0]);
+      console.log(this.state.blocks[0].index);
       }
+      
   }
 
 
   render () {
-    let message = (<Message positive={this.state.positive} negative={this.state.negative} style={{position: 'absolute', top: 10, 'width': '700px'}}>
-                    <Message.Header>{this.state.response}</Message.Header>
-                  </Message>)
 
     return (
       <div>
@@ -66,38 +46,81 @@ export default class extends React.Component {
 		    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css"></link>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossOrigin="anonymous"/>
         <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan|Paytone+One" rel="stylesheet"/>
-        <div className="container">
-          <div className="container" style={{'max-width': '700px', 'margin-top': '150px'}}>
-            {this.state.render?message:null}
+        <div className="container" style={{'max-width': '97%'}}>
+        <div className="row" style={{'margin-top': '14px'}}>
+          <div className="col-sm-6">
+          <div style={{height: '6px'}}>
+          </div>
+          <span style={{'font-family': 'Paytone One', 'font-size': '40px', 'height': '200px'}}>Mccoin Explorer</span>
+          </div>
+          <div className="col-sm-6">
+            <div className="container" style={{'margin-right': '0'}}>
             <div className="row">
-              <div className="col-2">
-              </div>
-              <div className="col">
-                <div className="container">
-                  <div className="row">
-                    <div className="col-1">
-                      <i className="fas fa-shower" style={{'font-size': '50px'}}></i>    
-                    </div>
-                    <div className="col">
-                      <span style={{'font-family': 'Paytone One', 'font-size': '50px', position: 'absolute', 'margin-top': '13px', 'margin-left': '22px' }}>Mccoin Faucet</span>                 
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-2">
-              </div>
+            <div className="col-9">
+            <Input fluid placeholder='Search...' />
             </div>
-            <div className="row" style={{'height': '70px'}}>
+            <div className="col-3" style={{'padding': '0'}}>
+            <Button secondary style={{'width': '100%'}}>Search</Button>
             </div>
-            <div className="row">
-              <div className="col">
-                <Input fluid focus disabled={this.state.loading} onChange={(e)=>this.setState({address: e.target.value})} placeholder='Address' />
-              </div>
-              <div>
-                <Button secondary loading={this.state.loading} onClick={this.requestMccoin}>Send</Button>
-              </div>
+            </div>
             </div>
           </div>
+        </div>
+        <Table celled>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Index</Table.HeaderCell>
+            <Table.HeaderCell>Transactions</Table.HeaderCell>
+            <Table.HeaderCell>Difficulty</Table.HeaderCell>
+            <Table.HeaderCell>MinedBy</Table.HeaderCell>
+            <Table.HeaderCell>BlockDataHash</Table.HeaderCell>
+            <Table.HeaderCell>Nonce</Table.HeaderCell>
+            <Table.HeaderCell>Date Created</Table.HeaderCell>
+            <Table.HeaderCell>BlockHash</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+        {
+          this.state.blocks.map((block) => 
+            (parseInt(block.index) <= this.state.page)?
+              <Table.Row key={block}>
+                <Table.Cell>{block.index}</Table.Cell>
+                <Table.Cell>{block.transactions.length}</Table.Cell>
+                <Table.Cell>{block.difficulty}</Table.Cell>
+                <Table.Cell>{block.minedBy}</Table.Cell>
+                <Table.Cell>{block.blockDataHash}</Table.Cell>
+                <Table.Cell>{block.nonce}</Table.Cell>
+                <Table.Cell>{block.dateCreated}</Table.Cell>
+                <Table.Cell>{block.blockHash}</Table.Cell>
+              </Table.Row>
+              :null)
+        }
+        </Table.Body>
+        <Table.Footer>
+          <Table.Row>
+            <Table.HeaderCell colSpan='8'>
+              <Menu floated='right' pagination>
+                <Menu.Item as='a' icon>
+                  <Icon name='chevron left' />
+                </Menu.Item>
+                <Menu.Item as='a'>1</Menu.Item>
+                {
+                this.state.blocks.map((block) => {
+                  if(parseInt(block.index) == this.state.page){
+                    <Menu.Item as='a'>{block.index + 1}</Menu.Item>
+                    //this.setState({page: this.state.page+10})
+                  }
+                  null
+                })
+                }
+                <Menu.Item as='a' icon>
+                  <Icon name='chevron right' />
+                </Menu.Item>
+              </Menu>
+            </Table.HeaderCell>
+          </Table.Row>
+        </Table.Footer>
+      </Table>
         </div>
       </div>
     )

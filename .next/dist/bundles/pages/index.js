@@ -88,6 +88,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios__ = __webpack_require__("axios");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_next_link__ = __webpack_require__("next/link");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_next_link___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_next_link__);
 
 var _jsxFileName = "C:\\Users\\Kim\\Desktop\\Next2\\pages\\index.js";
 
@@ -112,6 +114,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 
 
+
 var _default =
 /*#__PURE__*/
 function (_React$Component) {
@@ -124,24 +127,26 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, (_default.__proto__ || Object.getPrototypeOf(_default)).call(this, props));
     _this.state = {
-      loading: false
+      blocks: [],
+      page: 10
     };
-    _this.requestMccoin = _this.requestMccoin.bind(_assertThisInitialized(_this));
+    _this.getAllBlocks = _this.getAllBlocks.bind(_assertThisInitialized(_this));
     return _this;
   } // handling escape close
 
 
   _createClass(_default, [{
     key: "componentDidMount",
-    value: function componentDidMount() {//this.requestMccoin();
+    value: function componentDidMount() {
+      this.getAllBlocks();
     }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {}
   }, {
-    key: "requestMccoin",
+    key: "getAllBlocks",
     value: function () {
-      var _requestMccoin = _asyncToGenerator(
+      var _getAllBlocks = _asyncToGenerator(
       /*#__PURE__*/
       __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.mark(function _callee() {
         var response;
@@ -149,46 +154,22 @@ function (_React$Component) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                //9383deb8decad89faec764db2ab881358304b022
-                console.log(this.state.address);
-                this.setState({
-                  loading: true,
-                  response: null
-                });
-                _context.next = 4;
-                return __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get('http://localhost:3001/faucet/' + this.state.address + '/10');
+                _context.next = 2;
+                return __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get('http://localhost:3001/blocks/');
 
-              case 4:
+              case 2:
                 response = _context.sent;
-                console.log(response.data);
 
                 if (response) {
+                  //console.log(response.data);
                   this.setState({
-                    loading: false,
-                    response: response.data,
-                    show: false,
-                    render: true
+                    blocks: response.data
                   });
-
-                  if (response.data === 'Request accepted!') {
-                    this.setState({
-                      positive: true
-                    });
-                  } else {
-                    this.setState({
-                      negative: true
-                    });
-                  }
-
-                  setTimeout(function () {
-                    //Start the timer
-                    this.setState({
-                      render: false
-                    }); //After 1 second, set render to true
-                  }.bind(this), 5000);
+                  console.log(this.state.blocks[0]);
+                  console.log(this.state.blocks[0].index);
                 }
 
-              case 7:
+              case 4:
               case "end":
                 return _context.stop();
             }
@@ -196,8 +177,8 @@ function (_React$Component) {
         }, _callee, this);
       }));
 
-      return function requestMccoin() {
-        return _requestMccoin.apply(this, arguments);
+      return function getAllBlocks() {
+        return _getAllBlocks.apply(this, arguments);
       };
     }()
   }, {
@@ -205,28 +186,10 @@ function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var message = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Message"], {
-        positive: this.state.positive,
-        negative: this.state.negative,
-        style: {
-          position: 'absolute',
-          top: 10,
-          'width': '700px'
-        },
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 59
-        }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Message"].Header, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 60
-        }
-      }, this.state.response));
       return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 64
+          lineNumber: 44
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
         rel: "stylesheet",
@@ -235,14 +198,14 @@ function (_React$Component) {
         crossOrigin: "anonymous",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 65
+          lineNumber: 45
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
         rel: "stylesheet",
         href: "//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 66
+          lineNumber: 46
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
         rel: "stylesheet",
@@ -251,149 +214,286 @@ function (_React$Component) {
         crossOrigin: "anonymous",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 67
+          lineNumber: 47
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
         href: "https://fonts.googleapis.com/css?family=Baloo+Chettan|Paytone+One",
         rel: "stylesheet",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 68
+          lineNumber: 48
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "container",
+        style: {
+          'max-width': '97%'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 49
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "row",
+        style: {
+          'margin-top': '14px'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 50
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "col-sm-6",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 51
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        style: {
+          height: '6px'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 52
+        }
+      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("span", {
+        style: {
+          'font-family': 'Paytone One',
+          'font-size': '40px',
+          'height': '200px'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 54
+        }
+      }, "Mccoin Explorer")), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "col-sm-6",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 56
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "container",
+        style: {
+          'margin-right': '0'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 57
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "row",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 58
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "col-9",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 59
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Input"], {
+        fluid: true,
+        placeholder: "Search...",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 60
+        }
+      })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "col-3",
+        style: {
+          'padding': '0'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 62
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Button"], {
+        secondary: true,
+        style: {
+          'width': '100%'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 63
+        }
+      }, "Search")))))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"], {
+        celled: true,
         __source: {
           fileName: _jsxFileName,
           lineNumber: 69
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "container",
-        style: {
-          'max-width': '700px',
-          'margin-top': '150px'
-        },
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Header, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 70
         }
-      }, this.state.render ? message : null, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "row",
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 71
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 72
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "col-2",
+      }, "Index"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 73
         }
-      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "col",
+      }, "Transactions"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 74
+        }
+      }, "Difficulty"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 75
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "container",
+      }, "MinedBy"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 76
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "row",
+      }, "BlockDataHash"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 77
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "col-1",
+      }, "Nonce"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 78
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("i", {
-        className: "fas fa-shower",
-        style: {
-          'font-size': '50px'
-        },
+      }, "Date Created"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 79
         }
-      })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "col",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 81
-        }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("span", {
-        style: {
-          'font-family': 'Paytone One',
-          'font-size': '50px',
-          position: 'absolute',
-          'margin-top': '13px',
-          'margin-left': '22px'
-        },
+      }, "BlockHash"))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Body, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 82
         }
-      }, "Mccoin Faucet"))))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "col-2",
+      }, this.state.blocks.map(function (block) {
+        return parseInt(block.index) <= _this2.state.page ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
+          key: block,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 86
+          }
+        }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 87
+          }
+        }, block.index), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 88
+          }
+        }, block.transactions.length), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 89
+          }
+        }, block.difficulty), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 90
+          }
+        }, block.minedBy), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 91
+          }
+        }, block.blockDataHash), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 92
+          }
+        }, block.nonce), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 93
+          }
+        }, block.dateCreated), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 94
+          }
+        }, block.blockHash)) : null;
+      })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Footer, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 87
+          lineNumber: 99
         }
-      })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "row",
-        style: {
-          'height': '70px'
-        },
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 90
+          lineNumber: 100
         }
-      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "row",
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        colSpan: "8",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 92
+          lineNumber: 101
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "col",
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Menu"], {
+        floated: "right",
+        pagination: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 93
+          lineNumber: 102
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Input"], {
-        fluid: true,
-        focus: true,
-        disabled: this.state.loading,
-        onChange: function onChange(e) {
-          return _this2.setState({
-            address: e.target.value
-          });
-        },
-        placeholder: "Address",
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Menu"].Item, {
+        as: "a",
+        icon: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 94
+          lineNumber: 103
         }
-      })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Icon"], {
+        name: "chevron left",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 96
+          lineNumber: 104
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Button"], {
-        secondary: true,
-        loading: this.state.loading,
-        onClick: this.requestMccoin,
+      })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Menu"].Item, {
+        as: "a",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 97
+          lineNumber: 106
         }
-      }, "Send"))))));
+      }, "1"), this.state.blocks.map(function (block) {
+        if (parseInt(block.index) == _this2.state.page) {
+          __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Menu"].Item, {
+            as: "a",
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 110
+            }
+          }, block.index + 1); //this.setState({page: this.state.page+10})
+        }
+
+        null;
+      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Menu"].Item, {
+        as: "a",
+        icon: true,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 116
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Icon"], {
+        name: "chevron right",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 117
+        }
+      })))))))));
     }
   }]);
 
@@ -423,6 +523,13 @@ module.exports = require("@babel/runtime/regenerator");
 /***/ (function(module, exports) {
 
 module.exports = require("axios");
+
+/***/ }),
+
+/***/ "next/link":
+/***/ (function(module, exports) {
+
+module.exports = require("next/link");
 
 /***/ }),
 
