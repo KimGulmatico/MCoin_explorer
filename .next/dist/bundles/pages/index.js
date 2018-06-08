@@ -90,6 +90,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_next_link__ = __webpack_require__("next/link");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_next_link___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_next_link__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_loader_spinner__ = __webpack_require__("react-loader-spinner");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_loader_spinner___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_loader_spinner__);
 
 var _jsxFileName = "C:\\Users\\Kim\\Desktop\\Next2\\pages\\index.js";
 
@@ -108,6 +110,7 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 
 
 
@@ -139,7 +142,8 @@ function (_React$Component) {
       safebalance: '',
       confirmedbalance: '',
       pendingbalance: '',
-      hash: ''
+      hash: '',
+      load: true
     };
     _this.getAllBlocks = _this.getAllBlocks.bind(_assertThisInitialized(_this));
     _this.srchChange = _this.srchChange.bind(_assertThisInitialized(_this));
@@ -178,7 +182,8 @@ function (_React$Component) {
                 if (response) {
                   this.setState({
                     blocks: response.data,
-                    show: 'blocks'
+                    show: 'blocks',
+                    load: false
                   });
                 }
 
@@ -214,7 +219,8 @@ function (_React$Component) {
 
                 if (response) {
                   this.setState({
-                    transactions: response.data[index].transactions
+                    transactions: response.data[0].transactions,
+                    load: false
                   });
                 }
 
@@ -250,7 +256,8 @@ function (_React$Component) {
                 if (response) {
                   console.log(response.data);
                   this.setState({
-                    transactionAdrs: response.data
+                    transactionAdrs: response.data,
+                    load: false
                   });
                 }
 
@@ -332,18 +339,21 @@ function (_React$Component) {
         this.getBlocksTransactions(this.state.search);
         this.setState({
           show: 'transactions',
-          index: this.state.search
+          index: this.state.search,
+          load: true
         });
       } else if (this.state.search.length == 40 || this.state.search.length == 41) {
         this.getTransactionsandBalanceofAddress(this.state.search);
         this.setState({
-          show: 'transactionsAdrs'
+          show: 'transactionsAdrs',
+          load: true
         });
       } else if (this.state.search.length == 64) {
         this.getTransactionbyHash(this.state.search);
         this.setState({
           show: 'transactionsHash',
-          hash: this.state.search
+          hash: this.state.search,
+          load: true
         });
       } else if (this.state.search == '') {
         alert('Fill out search box');
@@ -364,85 +374,85 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 123
+          lineNumber: 128
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"], {
         celled: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 124
+          lineNumber: 129
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Header, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 125
+          lineNumber: 130
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 126
+          lineNumber: 131
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 127
+          lineNumber: 132
         }
       }, "Index"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 128
+          lineNumber: 133
         }
       }, "Transactions"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 129
+          lineNumber: 134
         }
       }, "Difficulty"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 130
+          lineNumber: 135
         }
       }, "MinedBy"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 131
+          lineNumber: 136
         }
       }, "BlockDataHash"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 132
+          lineNumber: 137
         }
       }, "Nonce"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 133
+          lineNumber: 138
         }
       }, "Date Created"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 134
+          lineNumber: 139
         }
       }, "BlockHash"))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Body, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 137
+          lineNumber: 142
         }
       }, this.state.blocks.map(function (block) {
         return parseInt(block.index) <= _this2.state.page ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
-          key: block,
+          key: block.index,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 141
+            lineNumber: 146
           }
         }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 142
+            lineNumber: 147
           }
         }, block.index), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 143
+            lineNumber: 148
           }
         }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("p", {
           style: {
@@ -451,87 +461,88 @@ function (_React$Component) {
           onClick: function onClick() {
             _this2.setState({
               index: block.index,
-              show: 'transactions'
+              show: 'transactions',
+              load: true
             });
 
             _this2.getBlocksTransactions(block.index);
           },
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 143
+            lineNumber: 148
           }
         }, block.transactions.length)), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 144
+            lineNumber: 149
           }
         }, block.difficulty), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 145
+            lineNumber: 150
           }
         }, block.minedBy), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 146
+            lineNumber: 151
           }
         }, block.blockDataHash), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 147
+            lineNumber: 152
           }
         }, block.nonce), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 148
+            lineNumber: 153
           }
         }, block.dateCreated), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 149
+            lineNumber: 154
           }
         }, block.blockHash)) : null;
       })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Footer, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 154
+          lineNumber: 159
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 155
+          lineNumber: 160
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         colSpan: "8",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 156
+          lineNumber: 161
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Menu"], {
         floated: "right",
         pagination: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 157
+          lineNumber: 162
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Menu"].Item, {
         as: "a",
         icon: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 158
+          lineNumber: 163
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Icon"], {
         name: "chevron left",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 159
+          lineNumber: 164
         }
       })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Menu"].Item, {
         as: "a",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 161
+          lineNumber: 166
         }
       }, "1"), this.state.blocks.map(function (block) {
         if (parseInt(block.index) == _this2.state.page) {
@@ -539,7 +550,7 @@ function (_React$Component) {
             as: "a",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 165
+              lineNumber: 170
             }
           }, block.index + 1); //this.setState({page: this.state.page+10})
         }
@@ -550,13 +561,13 @@ function (_React$Component) {
         icon: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 171
+          lineNumber: 176
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Icon"], {
         name: "chevron right",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 172
+          lineNumber: 177
         }
       }))))))));
       var transactions = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
@@ -567,130 +578,129 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 182
+          lineNumber: 187
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h3", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 183
+          lineNumber: 188
         }
       }, "Transactions for Block: ", this.state.index), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"], {
         celled: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 184
+          lineNumber: 189
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Header, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 185
+          lineNumber: 190
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 186
+          lineNumber: 191
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 187
+          lineNumber: 192
         }
       }, "From"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 188
+          lineNumber: 193
         }
       }, "To"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 189
+          lineNumber: 194
         }
       }, "Value"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 190
+          lineNumber: 195
         }
       }, "Fee"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 191
+          lineNumber: 196
         }
       }, "Date created"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 192
+          lineNumber: 197
         }
       }, "Data"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 193
+          lineNumber: 198
         }
       }, "Sender public key"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 194
+          lineNumber: 199
         }
       }, "Status"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 195
+          lineNumber: 200
         }
       }, "Data hash"))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Body, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 198
+          lineNumber: 203
         }
       }, this.state.transactions.map(function (trans) {
         return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
-          key: trans,
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 201
-          }
-        }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 202
-          }
-        }, trans.from), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 203
-          }
-        }, trans.to), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 204
-          }
-        }, trans.value), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 205
-          }
-        }, trans.fee), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
             lineNumber: 206
           }
-        }, trans.dateCreated), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
             lineNumber: 207
           }
-        }, trans.data), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        }, trans.from), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
             lineNumber: 208
           }
-        }, trans.senderPubKey), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        }, trans.to), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
             lineNumber: 209
           }
-        }, trans.transferSuccessful), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        }, trans.value), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
             lineNumber: 210
+          }
+        }, trans.fee), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 211
+          }
+        }, trans.dateCreated), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 212
+          }
+        }, trans.data), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 213
+          }
+        }, trans.senderPubKey), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 214
+          }
+        }, trans.transferSuccessful), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 215
           }
         }, trans.transactionDataHash));
       }))));
@@ -700,32 +710,32 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 218
+          lineNumber: 223
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h3", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 219
+          lineNumber: 224
         }
       }, "Address: ", this.state.address), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h4", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 220
+          lineNumber: 225
         }
       }, "Safe balance: ", this.state.safebalance), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h4", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 221
+          lineNumber: 226
         }
       }, "Confirmed balance: ", this.state.confirmedbalance), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h4", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 222
+          lineNumber: 227
         }
       }, "Pending balance: ", this.state.pendingbalance), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h3", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 223
+          lineNumber: 228
         }
       }, "Transactions"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         style: {
@@ -734,125 +744,124 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 224
+          lineNumber: 229
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"], {
         celled: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 225
+          lineNumber: 230
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Header, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 226
+          lineNumber: 231
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 227
+          lineNumber: 232
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 228
+          lineNumber: 233
         }
       }, "From"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 229
+          lineNumber: 234
         }
       }, "To"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 230
+          lineNumber: 235
         }
       }, "Value"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 231
+          lineNumber: 236
         }
       }, "Fee"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 232
+          lineNumber: 237
         }
       }, "Date created"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 233
+          lineNumber: 238
         }
       }, "Data"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 234
+          lineNumber: 239
         }
       }, "Sender public key"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 235
+          lineNumber: 240
         }
       }, "Status"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 236
+          lineNumber: 241
         }
       }, "Data hash"))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Body, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 239
+          lineNumber: 244
         }
       }, this.state.transactionAdrs.map(function (trans) {
         return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
-          key: trans,
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 242
-          }
-        }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 243
-          }
-        }, trans.from), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 244
-          }
-        }, trans.to), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 245
-          }
-        }, trans.value), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 246
-          }
-        }, trans.fee), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
             lineNumber: 247
           }
-        }, trans.dateCreated), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
             lineNumber: 248
           }
-        }, trans.data), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        }, trans.from), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
             lineNumber: 249
           }
-        }, trans.senderPubKey), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        }, trans.to), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
             lineNumber: 250
           }
-        }, trans.transferSuccessful), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        }, trans.value), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
             lineNumber: 251
+          }
+        }, trans.fee), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 252
+          }
+        }, trans.dateCreated), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 253
+          }
+        }, trans.data), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 254
+          }
+        }, trans.senderPubKey), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 255
+          }
+        }, trans.transferSuccessful), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 256
           }
         }, trans.transactionDataHash));
       })))));
@@ -862,12 +871,12 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 260
+          lineNumber: 265
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h3", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 261
+          lineNumber: 266
         }
       }, "Transaction Hash: ", this.state.hash), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         style: {
@@ -876,129 +885,129 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 262
+          lineNumber: 267
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"], {
         celled: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 263
+          lineNumber: 268
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Header, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 264
-        }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 265
-        }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 266
-        }
-      }, "From"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 267
-        }
-      }, "To"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 268
-        }
-      }, "Value"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
-        __source: {
-          fileName: _jsxFileName,
           lineNumber: 269
         }
-      }, "Fee"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 270
         }
-      }, "Date created"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 271
         }
-      }, "Data"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+      }, "From"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 272
         }
-      }, "Sender public key"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+      }, "To"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 273
         }
-      }, "Status"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+      }, "Value"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 274
         }
-      }, "Data hash"))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Body, {
+      }, "Fee"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 275
+        }
+      }, "Date created"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 276
+        }
+      }, "Data"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 277
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
+      }, "Sender public key"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 278
+        }
+      }, "Status"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 279
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 280
-        }
-      }, this.state.transactionHash.from), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 281
-        }
-      }, this.state.transactionHash.to), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+      }, "Data hash"))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Body, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 282
         }
-      }, this.state.transactionHash.value), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 283
-        }
-      }, this.state.transactionHash.fee), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 284
         }
-      }, this.state.transactionHash.dateCreated), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 285
         }
-      }, this.state.transactionHash.data), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+      }, this.state.transactionHash.from), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 286
         }
-      }, this.state.transactionHash.senderPubKey), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+      }, this.state.transactionHash.to), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 287
         }
-      }, this.state.transactionHash.transferSuccessful), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+      }, this.state.transactionHash.value), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 288
+        }
+      }, this.state.transactionHash.fee), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 289
+        }
+      }, this.state.transactionHash.dateCreated), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 290
+        }
+      }, this.state.transactionHash.data), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 291
+        }
+      }, this.state.transactionHash.senderPubKey), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 292
+        }
+      }, this.state.transactionHash.transferSuccessful), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 293
         }
       }, this.state.transactionHash.transactionDataHash))))));
       return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 297
+          lineNumber: 302
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
         rel: "stylesheet",
@@ -1007,14 +1016,14 @@ function (_React$Component) {
         crossOrigin: "anonymous",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 298
+          lineNumber: 303
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
         rel: "stylesheet",
         href: "//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 299
+          lineNumber: 304
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
         rel: "stylesheet",
@@ -1023,14 +1032,14 @@ function (_React$Component) {
         crossOrigin: "anonymous",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 300
+          lineNumber: 305
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
         href: "https://fonts.googleapis.com/css?family=Baloo+Chettan|Paytone+One",
         rel: "stylesheet",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 301
+          lineNumber: 306
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "container",
@@ -1039,7 +1048,7 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 302
+          lineNumber: 307
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "row",
@@ -1048,13 +1057,13 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 303
+          lineNumber: 308
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "col-sm-6",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 304
+          lineNumber: 309
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         style: {
@@ -1062,7 +1071,7 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 305
+          lineNumber: 310
         }
       }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("span", {
         onClick: this.getAllBlocks,
@@ -1073,13 +1082,13 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 307
+          lineNumber: 312
         }
       }, "Mccoin Explorer")), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "col-sm-6",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 309
+          lineNumber: 314
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "container",
@@ -1088,19 +1097,19 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 310
+          lineNumber: 315
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "row",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 311
+          lineNumber: 316
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "col-9",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 312
+          lineNumber: 317
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Input"], {
         fluid: true,
@@ -1108,7 +1117,7 @@ function (_React$Component) {
         onChange: this.srchChange,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 313
+          lineNumber: 318
         }
       })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         className: "col-3",
@@ -1117,7 +1126,7 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 315
+          lineNumber: 320
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Button"], {
         secondary: true,
@@ -1127,9 +1136,28 @@ function (_React$Component) {
         onClick: this.search,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 316
+          lineNumber: 321
         }
-      }, "Search")))))), this.state.show == 'blocks' ? allblocks : this.state.show == 'transactions' ? transactions : this.state.show == 'transactionsAdrs' ? transactionsAdrs : transactionsbyhash));
+      }, "Search")))))), this.state.show == 'blocks' ? allblocks : this.state.show == 'transactions' ? transactions : this.state.show == 'transactionsAdrs' ? transactionsAdrs : transactionsbyhash), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("br", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 329
+        }
+      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("center", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 330
+        }
+      }, this.state.load ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_loader_spinner___default.a, {
+        type: "TailSpin",
+        color: "gray",
+        height: 50,
+        width: 50,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 332
+        }
+      }) : null));
     }
   }]);
 
@@ -1180,6 +1208,13 @@ module.exports = require("next/router");
 /***/ (function(module, exports) {
 
 module.exports = require("react");
+
+/***/ }),
+
+/***/ "react-loader-spinner":
+/***/ (function(module, exports) {
+
+module.exports = require("react-loader-spinner");
 
 /***/ }),
 

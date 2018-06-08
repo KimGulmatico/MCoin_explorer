@@ -3,6 +3,7 @@ import Router from 'next/router'
 import Divider, { Button, Icon, Label, Menu, Table, Input } from 'semantic-ui-react'
 import axios from 'axios'
 import Link from 'next/link'
+import Loader from 'react-loader-spinner'
 
 export default class extends React.Component { 
   constructor (props) {
@@ -21,6 +22,7 @@ export default class extends React.Component {
       confirmedbalance: '',
       pendingbalance: '',
       hash: '',
+      load: true,
     }
     this.getAllBlocks = this.getAllBlocks.bind(this);
     this.srchChange = this.srchChange.bind(this); 
@@ -43,9 +45,10 @@ export default class extends React.Component {
       if(response){
         this.setState({
           blocks: response.data,
-          show: 'blocks'
+          show: 'blocks',
+          load: false,
         })
-      }     
+      }   
   }
 
   async getBlocksTransactions(index) {
@@ -53,9 +56,10 @@ export default class extends React.Component {
       const response = await axios.get('http://localhost:3001/blocks/'+index);
       if(response){
         this.setState({
-          transactions: response.data[index].transactions,
+          transactions: response.data[0].transactions,
+          load: false,
         })
-      }     
+      }      
   }
 
   async getTransactionsandBalanceofAddress(address) {
@@ -64,6 +68,7 @@ export default class extends React.Component {
         console.log(response.data);
         this.setState({
           transactionAdrs: response.data,
+          load: false,
         })
       } 
 
@@ -98,15 +103,15 @@ export default class extends React.Component {
   search() {
       if(!isNaN(this.state.search) && this.state.search != '' && this.state.search.length != 41){
         this.getBlocksTransactions(this.state.search);
-        this.setState({show: 'transactions', index: this.state.search});
+        this.setState({show: 'transactions', index: this.state.search, load: true});
       }
       else if(this.state.search.length == 40 || this.state.search.length == 41){
         this.getTransactionsandBalanceofAddress(this.state.search);
-        this.setState({show: 'transactionsAdrs'});
+        this.setState({show: 'transactionsAdrs', load: true});
       }
       else if(this.state.search.length == 64){
         this.getTransactionbyHash(this.state.search);
-        this.setState({show: 'transactionsHash', hash: this.state.search});
+        this.setState({show: 'transactionsHash', hash: this.state.search, load: true});
       }
       else if(this.state.search == ''){
         alert('Fill out search box');
@@ -138,9 +143,9 @@ export default class extends React.Component {
                       {
                         this.state.blocks.map((block) => 
                           (parseInt(block.index) <= this.state.page)?
-                            <Table.Row key={block}>
+                            <Table.Row key={block.index}>
                               <Table.Cell>{block.index}</Table.Cell>
-                              <Table.Cell><p style={{color: '#3498db'}} onClick={()=>{this.setState({index: block.index, show: 'transactions'}); this.getBlocksTransactions(block.index)}}>{block.transactions.length}</p></Table.Cell>
+                              <Table.Cell><p style={{color: '#3498db'}} onClick={()=>{this.setState({index: block.index, show: 'transactions', load: true}); this.getBlocksTransactions(block.index)}}>{block.transactions.length}</p></Table.Cell>
                               <Table.Cell>{block.difficulty}</Table.Cell>
                               <Table.Cell>{block.minedBy}</Table.Cell>
                               <Table.Cell>{block.blockDataHash}</Table.Cell>
@@ -198,7 +203,7 @@ export default class extends React.Component {
                           <Table.Body>
                           {
                             this.state.transactions.map((trans) => 
-                                <Table.Row key={trans}>
+                                <Table.Row>
                                   <Table.Cell>{trans.from}</Table.Cell>
                                   <Table.Cell>{trans.to}</Table.Cell>
                                   <Table.Cell>{trans.value}</Table.Cell>
@@ -239,7 +244,7 @@ export default class extends React.Component {
                         <Table.Body>
                         {
                           this.state.transactionAdrs.map((trans) => 
-                              <Table.Row key={trans}>
+                              <Table.Row>
                                 <Table.Cell>{trans.from}</Table.Cell>
                                 <Table.Cell>{trans.to}</Table.Cell>
                                 <Table.Cell>{trans.value}</Table.Cell>
@@ -321,6 +326,12 @@ export default class extends React.Component {
         </div>
         {this.state.show == 'blocks'?allblocks:this.state.show == 'transactions'?transactions:this.state.show == 'transactionsAdrs'?transactionsAdrs:transactionsbyhash}
         </div>
+        <br/>
+        <center>
+        {
+          this.state.load?<Loader type="TailSpin" color="gray" height={50} width={50}/>:null
+        }
+        </center>
       </div>
     )
   }
