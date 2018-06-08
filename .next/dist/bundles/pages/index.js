@@ -128,9 +128,24 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, (_default.__proto__ || Object.getPrototypeOf(_default)).call(this, props));
     _this.state = {
       blocks: [],
-      page: 10
+      transactions: [],
+      transactionAdrs: [],
+      transactionHash: [],
+      page: 10,
+      index: null,
+      show: 'blocks',
+      search: '',
+      address: '',
+      safebalance: '',
+      confirmedbalance: '',
+      pendingbalance: '',
+      hash: ''
     };
     _this.getAllBlocks = _this.getAllBlocks.bind(_assertThisInitialized(_this));
+    _this.srchChange = _this.srchChange.bind(_assertThisInitialized(_this));
+    _this.search = _this.search.bind(_assertThisInitialized(_this));
+    _this.getTransactionsandBalanceofAddress = _this.getTransactionsandBalanceofAddress.bind(_assertThisInitialized(_this));
+    _this.getTransactionbyHash = _this.getTransactionbyHash.bind(_assertThisInitialized(_this));
     return _this;
   } // handling escape close
 
@@ -161,12 +176,10 @@ function (_React$Component) {
                 response = _context.sent;
 
                 if (response) {
-                  //console.log(response.data);
                   this.setState({
-                    blocks: response.data
+                    blocks: response.data,
+                    show: 'blocks'
                   });
-                  console.log(this.state.blocks[0]);
-                  console.log(this.state.blocks[0].index);
                 }
 
               case 4:
@@ -182,291 +195,343 @@ function (_React$Component) {
       };
     }()
   }, {
+    key: "getBlocksTransactions",
+    value: function () {
+      var _getBlocksTransactions = _asyncToGenerator(
+      /*#__PURE__*/
+      __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.mark(function _callee2(index) {
+        var response;
+        return __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                console.log(index);
+                _context2.next = 3;
+                return __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get('http://localhost:3001/blocks/' + index);
+
+              case 3:
+                response = _context2.sent;
+
+                if (response) {
+                  this.setState({
+                    transactions: response.data[index].transactions
+                  });
+                }
+
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      return function getBlocksTransactions(_x) {
+        return _getBlocksTransactions.apply(this, arguments);
+      };
+    }()
+  }, {
+    key: "getTransactionsandBalanceofAddress",
+    value: function () {
+      var _getTransactionsandBalanceofAddress = _asyncToGenerator(
+      /*#__PURE__*/
+      __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.mark(function _callee3(address) {
+        var response, balance;
+        return __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get('http://localhost:3001/address/' + address + '/transactions');
+
+              case 2:
+                response = _context3.sent;
+
+                if (response) {
+                  console.log(response.data);
+                  this.setState({
+                    transactionAdrs: response.data
+                  });
+                }
+
+                _context3.next = 6;
+                return __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get('http://localhost:3001/address/' + address + '/balance');
+
+              case 6:
+                balance = _context3.sent;
+
+                if (balance) {
+                  console.log(balance.data);
+                  this.setState({
+                    safebalance: balance.data.safeBalance,
+                    confirmedbalance: balance.data.confirmedBalance,
+                    pendingbalance: balance.data.pendingBalance,
+                    address: address
+                  });
+                }
+
+              case 8:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      return function getTransactionsandBalanceofAddress(_x2) {
+        return _getTransactionsandBalanceofAddress.apply(this, arguments);
+      };
+    }()
+  }, {
+    key: "getTransactionbyHash",
+    value: function () {
+      var _getTransactionbyHash = _asyncToGenerator(
+      /*#__PURE__*/
+      __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.mark(function _callee4(txhash) {
+        var response;
+        return __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return __WEBPACK_IMPORTED_MODULE_4_axios___default.a.get('http://localhost:3001/transactions/' + txhash);
+
+              case 2:
+                response = _context4.sent;
+
+                if (response) {
+                  console.log(response.data);
+                  this.setState({
+                    transactionHash: response.data
+                  });
+                }
+
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      return function getTransactionbyHash(_x3) {
+        return _getTransactionbyHash.apply(this, arguments);
+      };
+    }()
+  }, {
+    key: "srchChange",
+    value: function srchChange(e) {
+      this.setState({
+        search: e.target.value
+      });
+    }
+  }, {
+    key: "search",
+    value: function search() {
+      if (!isNaN(this.state.search) && this.state.search != '' && this.state.search.length != 41) {
+        this.getBlocksTransactions(this.state.search);
+        this.setState({
+          show: 'transactions',
+          index: this.state.search
+        });
+      } else if (this.state.search.length == 40 || this.state.search.length == 41) {
+        this.getTransactionsandBalanceofAddress(this.state.search);
+        this.setState({
+          show: 'transactionsAdrs'
+        });
+      } else if (this.state.search.length == 64) {
+        this.getTransactionbyHash(this.state.search);
+        this.setState({
+          show: 'transactionsHash',
+          hash: this.state.search
+        });
+      } else if (this.state.search == '') {
+        alert('Fill out search box');
+      } else {
+        console.log('Error');
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
 
-      return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 44
-        }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
-        rel: "stylesheet",
-        href: "https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css",
-        integrity: "sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4",
-        crossOrigin: "anonymous",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 45
-        }
-      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
-        rel: "stylesheet",
-        href: "//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 46
-        }
-      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
-        rel: "stylesheet",
-        href: "https://use.fontawesome.com/releases/v5.0.13/css/all.css",
-        integrity: "sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp",
-        crossOrigin: "anonymous",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 47
-        }
-      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
-        href: "https://fonts.googleapis.com/css?family=Baloo+Chettan|Paytone+One",
-        rel: "stylesheet",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 48
-        }
-      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "container",
+      var allblocks = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
         style: {
-          'max-width': '97%'
+          overflow: 'auto',
+          'max-width': '100%',
+          'margin-top': '15px'
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 49
+          lineNumber: 123
         }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "row",
-        style: {
-          'margin-top': '14px'
-        },
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 50
-        }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "col-sm-6",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 51
-        }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        style: {
-          height: '6px'
-        },
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 52
-        }
-      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("span", {
-        style: {
-          'font-family': 'Paytone One',
-          'font-size': '40px',
-          'height': '200px'
-        },
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 54
-        }
-      }, "Mccoin Explorer")), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "col-sm-6",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 56
-        }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "container",
-        style: {
-          'margin-right': '0'
-        },
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 57
-        }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "row",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 58
-        }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "col-9",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 59
-        }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Input"], {
-        fluid: true,
-        placeholder: "Search...",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 60
-        }
-      })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
-        className: "col-3",
-        style: {
-          'padding': '0'
-        },
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 62
-        }
-      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Button"], {
-        secondary: true,
-        style: {
-          'width': '100%'
-        },
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 63
-        }
-      }, "Search")))))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"], {
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"], {
         celled: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 69
+          lineNumber: 124
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Header, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 70
+          lineNumber: 125
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 71
+          lineNumber: 126
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 72
+          lineNumber: 127
         }
       }, "Index"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 73
+          lineNumber: 128
         }
       }, "Transactions"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 74
+          lineNumber: 129
         }
       }, "Difficulty"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 75
+          lineNumber: 130
         }
       }, "MinedBy"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 76
+          lineNumber: 131
         }
       }, "BlockDataHash"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 77
+          lineNumber: 132
         }
       }, "Nonce"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 78
+          lineNumber: 133
         }
       }, "Date Created"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 79
+          lineNumber: 134
         }
       }, "BlockHash"))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Body, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 82
+          lineNumber: 137
         }
       }, this.state.blocks.map(function (block) {
         return parseInt(block.index) <= _this2.state.page ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
           key: block,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 86
+            lineNumber: 141
           }
         }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 87
+            lineNumber: 142
           }
         }, block.index), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 88
+            lineNumber: 143
           }
-        }, block.transactions.length), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("p", {
+          style: {
+            color: '#3498db'
+          },
+          onClick: function onClick() {
+            _this2.setState({
+              index: block.index,
+              show: 'transactions'
+            });
+
+            _this2.getBlocksTransactions(block.index);
+          },
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 89
+            lineNumber: 143
+          }
+        }, block.transactions.length)), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 144
           }
         }, block.difficulty), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 90
+            lineNumber: 145
           }
         }, block.minedBy), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 91
+            lineNumber: 146
           }
         }, block.blockDataHash), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 92
+            lineNumber: 147
           }
         }, block.nonce), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 93
+            lineNumber: 148
           }
         }, block.dateCreated), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 94
+            lineNumber: 149
           }
         }, block.blockHash)) : null;
       })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Footer, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 99
+          lineNumber: 154
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 100
+          lineNumber: 155
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
         colSpan: "8",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 101
+          lineNumber: 156
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Menu"], {
         floated: "right",
         pagination: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 102
+          lineNumber: 157
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Menu"].Item, {
         as: "a",
         icon: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 103
+          lineNumber: 158
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Icon"], {
         name: "chevron left",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 104
+          lineNumber: 159
         }
       })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Menu"].Item, {
         as: "a",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 106
+          lineNumber: 161
         }
       }, "1"), this.state.blocks.map(function (block) {
         if (parseInt(block.index) == _this2.state.page) {
@@ -474,7 +539,7 @@ function (_React$Component) {
             as: "a",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 110
+              lineNumber: 165
             }
           }, block.index + 1); //this.setState({page: this.state.page+10})
         }
@@ -485,15 +550,586 @@ function (_React$Component) {
         icon: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 116
+          lineNumber: 171
         }
       }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Icon"], {
         name: "chevron right",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 117
+          lineNumber: 172
         }
-      })))))))));
+      }))))))));
+      var transactions = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        style: {
+          overflow: 'auto',
+          'max-width': '100%',
+          'margin-top': '15px'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 182
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h3", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 183
+        }
+      }, "Transactions for Block: ", this.state.index), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"], {
+        celled: true,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 184
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Header, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 185
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 186
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 187
+        }
+      }, "From"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 188
+        }
+      }, "To"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 189
+        }
+      }, "Value"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 190
+        }
+      }, "Fee"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 191
+        }
+      }, "Date created"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 192
+        }
+      }, "Data"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 193
+        }
+      }, "Sender public key"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 194
+        }
+      }, "Status"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 195
+        }
+      }, "Data hash"))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Body, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 198
+        }
+      }, this.state.transactions.map(function (trans) {
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
+          key: trans,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 201
+          }
+        }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 202
+          }
+        }, trans.from), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 203
+          }
+        }, trans.to), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 204
+          }
+        }, trans.value), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 205
+          }
+        }, trans.fee), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 206
+          }
+        }, trans.dateCreated), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 207
+          }
+        }, trans.data), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 208
+          }
+        }, trans.senderPubKey), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 209
+          }
+        }, trans.transferSuccessful), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 210
+          }
+        }, trans.transactionDataHash));
+      }))));
+      var transactionsAdrs = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        style: {
+          'margin-top': '15px'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 218
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h3", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 219
+        }
+      }, "Address: ", this.state.address), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h4", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 220
+        }
+      }, "Safe balance: ", this.state.safebalance), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h4", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 221
+        }
+      }, "Confirmed balance: ", this.state.confirmedbalance), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h4", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 222
+        }
+      }, "Pending balance: ", this.state.pendingbalance), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h3", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 223
+        }
+      }, "Transactions"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        style: {
+          overflow: 'auto',
+          'max-width': '100%'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 224
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"], {
+        celled: true,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 225
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Header, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 226
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 227
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 228
+        }
+      }, "From"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 229
+        }
+      }, "To"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 230
+        }
+      }, "Value"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 231
+        }
+      }, "Fee"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 232
+        }
+      }, "Date created"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 233
+        }
+      }, "Data"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 234
+        }
+      }, "Sender public key"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 235
+        }
+      }, "Status"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 236
+        }
+      }, "Data hash"))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Body, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 239
+        }
+      }, this.state.transactionAdrs.map(function (trans) {
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
+          key: trans,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 242
+          }
+        }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 243
+          }
+        }, trans.from), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 244
+          }
+        }, trans.to), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 245
+          }
+        }, trans.value), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 246
+          }
+        }, trans.fee), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 247
+          }
+        }, trans.dateCreated), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 248
+          }
+        }, trans.data), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 249
+          }
+        }, trans.senderPubKey), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 250
+          }
+        }, trans.transferSuccessful), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 251
+          }
+        }, trans.transactionDataHash));
+      })))));
+      var transactionsbyhash = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        style: {
+          'margin-top': '15px'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 260
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("h3", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 261
+        }
+      }, "Transaction Hash: ", this.state.hash), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        style: {
+          overflow: 'auto',
+          'max-width': '100%'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 262
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"], {
+        celled: true,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 263
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Header, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 264
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 265
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 266
+        }
+      }, "From"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 267
+        }
+      }, "To"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 268
+        }
+      }, "Value"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 269
+        }
+      }, "Fee"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 270
+        }
+      }, "Date created"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 271
+        }
+      }, "Data"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 272
+        }
+      }, "Sender public key"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 273
+        }
+      }, "Status"), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].HeaderCell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 274
+        }
+      }, "Data hash"))), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Body, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 277
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Row, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 279
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 280
+        }
+      }, this.state.transactionHash.from), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 281
+        }
+      }, this.state.transactionHash.to), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 282
+        }
+      }, this.state.transactionHash.value), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 283
+        }
+      }, this.state.transactionHash.fee), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 284
+        }
+      }, this.state.transactionHash.dateCreated), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 285
+        }
+      }, this.state.transactionHash.data), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 286
+        }
+      }, this.state.transactionHash.senderPubKey), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 287
+        }
+      }, this.state.transactionHash.transferSuccessful), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Table"].Cell, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 288
+        }
+      }, this.state.transactionHash.transactionDataHash))))));
+      return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 297
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
+        rel: "stylesheet",
+        href: "https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css",
+        integrity: "sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4",
+        crossOrigin: "anonymous",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 298
+        }
+      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
+        rel: "stylesheet",
+        href: "//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 299
+        }
+      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
+        rel: "stylesheet",
+        href: "https://use.fontawesome.com/releases/v5.0.13/css/all.css",
+        integrity: "sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp",
+        crossOrigin: "anonymous",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 300
+        }
+      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("link", {
+        href: "https://fonts.googleapis.com/css?family=Baloo+Chettan|Paytone+One",
+        rel: "stylesheet",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 301
+        }
+      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "container",
+        style: {
+          'max-width': '97%'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 302
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "row",
+        style: {
+          'margin-top': '14px'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 303
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "col-sm-6",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 304
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        style: {
+          height: '6px'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 305
+        }
+      }), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("span", {
+        onClick: this.getAllBlocks,
+        style: {
+          'font-family': 'Paytone One',
+          'font-size': '40px',
+          'height': '200px'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 307
+        }
+      }, "Mccoin Explorer")), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "col-sm-6",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 309
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "container",
+        style: {
+          'margin-right': '0'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 310
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "row",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 311
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "col-9",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 312
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Input"], {
+        fluid: true,
+        placeholder: "Search by Block Number/ Address/ TxHash",
+        onChange: this.srchChange,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 313
+        }
+      })), __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement("div", {
+        className: "col-3",
+        style: {
+          'padding': '0'
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 315
+        }
+      }, __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["Button"], {
+        secondary: true,
+        style: {
+          'width': '100%'
+        },
+        onClick: this.search,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 316
+        }
+      }, "Search")))))), this.state.show == 'blocks' ? allblocks : this.state.show == 'transactions' ? transactions : this.state.show == 'transactionsAdrs' ? transactionsAdrs : transactionsbyhash));
     }
   }]);
 
