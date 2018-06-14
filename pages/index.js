@@ -67,7 +67,7 @@ export default class extends React.Component {
       if(response){
         console.log(response.data);
         this.setState({
-          transactionAdrs: response.data,
+          transactionAdrs: response.data.transactions,
           load: false,
         })
       } 
@@ -328,9 +328,7 @@ export default class extends React.Component {
         </div>
         <br/>
         <center>
-        {
-          this.state.load?<Loader type="TailSpin" color="gray" height={50} width={50}/>:null
-        }
+        
         </center>
       </div>
     )
