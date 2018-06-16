@@ -23,12 +23,16 @@ export default class extends React.Component {
             "value": 100,
             "fee": 10,
             "data": "",
-        }
+        },
+        safebalance: null,
+        confirmedbalance: null,
+        pendingbalance: null,
     }
     this.unlockWallet = this.unlockWallet.bind(this);
     this.generateWallet = this.generateWallet.bind(this);
     this.logout = this.logout.bind(this);
     this.sendTransaction = this.sendTransaction.bind(this);
+    this.getBalance = this.getBalance.bind(this);
   }
 
   componentDidMount () {
@@ -43,6 +47,7 @@ export default class extends React.Component {
     if(this.state.privateKey){
     let temp = new BurgerWallet(this.state.privateKey);
     this.setState({burgerWallet: temp, show: 'account'})
+    this.getBalance(temp.address)
     console.log(temp);
     }
     else{
@@ -53,6 +58,7 @@ export default class extends React.Component {
   generateWallet() {
     let temp = new BurgerWallet();
     this.setState({burgerWallet: temp, show: 'account'})
+    this.getBalance(temp.address)
     console.log(temp);
   }
 
@@ -69,6 +75,17 @@ export default class extends React.Component {
     const response = await this.state.burgerWallet.send(transaction);
     console.log(transaction);
     alert(response.data);
+  }
+
+  async getBalance(address) {
+    const balance = await axios.get('http://localhost:3001/address/'+address+'/balance');
+      if(balance){
+        this.setState({
+          safebalance: balance.data.safeBalance,
+          confirmedbalance: balance.data.confirmedBalance,
+          pendingbalance: balance.data.pendingBalance,
+        })
+      } 
   }
 
   to=(e)=>{
@@ -178,6 +195,12 @@ export default class extends React.Component {
                     </div>
                     :null
                     }
+                </Card>
+                <Card fluid style={{padding: '10px'}}>
+                    <h2>Balance</h2>
+                    <p>Safe Balance: {this.state.safebalance}</p>
+                    <p>Confirmed Balance: {this.state.confirmedbalance}</p>
+                    <p>Pending Balance: {this.state.pendingbalance}</p>
                 </Card>
                 <Card fluid style={{padding: '10px'}}>
                     <h2>Send transaction</h2>
