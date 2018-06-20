@@ -4,6 +4,7 @@ import Divider, { Button, Icon, Label, Menu, Table, Input } from 'semantic-ui-re
 import axios from 'axios'
 import Link from 'next/link'
 import Loader from 'react-loader-spinner'
+import url from './host'
 
 export default class extends React.Component { 
   constructor (props) {
@@ -41,7 +42,7 @@ export default class extends React.Component {
   }
 
   async getAllBlocks() {
-      const response = await axios.get('http://localhost:3001/blocks/');
+      const response = await axios.get(url+'/blocks/');
       if(response){
         this.setState({
           blocks: response.data,
@@ -53,17 +54,17 @@ export default class extends React.Component {
 
   async getBlocksTransactions(index) {
       console.log(index);
-      const response = await axios.get('http://localhost:3001/blocks/'+index);
+      const response = await axios.get(url+'/blocks/'+index);
       if(response){
         this.setState({
-          transactions: response.data[0].transactions,
+          transactions: response.data.transactions,
           load: false,
         })
       }      
   }
 
   async getTransactionsandBalanceofAddress(address) {
-      const response = await axios.get('http://localhost:3001/address/'+address+'/transactions');
+      const response = await axios.get(url+'/address/'+address+'/transactions');
       if(response){
         console.log(response.data);
         this.setState({
@@ -72,7 +73,7 @@ export default class extends React.Component {
         })
       } 
 
-      const balance = await axios.get('http://localhost:3001/address/'+address+'/balance');
+      const balance = await axios.get(url+'/address/'+address+'/balance');
       if(balance){
         console.log(balance.data);
         this.setState({
@@ -85,7 +86,7 @@ export default class extends React.Component {
   }
 
   async getTransactionbyHash(txhash) {
-      const response = await axios.get('http://localhost:3001/transactions/'+txhash);
+      const response = await axios.get(url+'/transactions/'+txhash);
       if(response){
         console.log(response.data);
         this.setState({

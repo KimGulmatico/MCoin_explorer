@@ -4,6 +4,7 @@ import Divider, { Button, Icon, Label, Menu, Table, Input } from 'semantic-ui-re
 import axios from 'axios'
 import Link from 'next/link'
 import Loader from 'react-loader-spinner'
+import url from './host'
 
 export default class extends React.Component { 
   constructor (props) {
@@ -24,7 +25,7 @@ export default class extends React.Component {
   }
 
   async getPendingtxns() {
-      const response = await axios.get('http://localhost:3001/transactions/pending');
+      const response = await axios.get(host+'/transactions/pending');
       if(response){
         this.setState({
             pending: response.data,

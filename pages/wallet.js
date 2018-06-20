@@ -5,10 +5,8 @@ import axios from 'axios'
 import Link from 'next/link'
 import BurgerWallet from '../burgerWallet/burgerWallet'
 import BurgerTransaction from '../burgerWallet/burgerTransaction'
+import url from './host'
 
-
-// const BurgerWallet = require('../burgerWallet/burgerWallet')
-// const BurgerTransaction = require('../burgerWallet/burgerTransaction')
 const receiver = new BurgerWallet();
 
 export default class extends React.Component { 
@@ -78,7 +76,7 @@ export default class extends React.Component {
   }
 
   async getBalance(address) {
-    const balance = await axios.get('http://localhost:3001/address/'+address+'/balance');
+    const balance = await axios.get(url+'/address/'+address+'/balance');
       if(balance){
         this.setState({
           safebalance: balance.data.safeBalance,
