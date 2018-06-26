@@ -5,8 +5,9 @@ import axios from 'axios'
 import Link from 'next/link'
 import BurgerWallet from '../burgerWallet/burgerWallet'
 import BurgerTransaction from '../burgerWallet/burgerTransaction'
-import url from './host'
+import host from './host'
 
+const url = host.node
 const receiver = new BurgerWallet();
 
 export default class extends React.Component { 
@@ -71,8 +72,7 @@ export default class extends React.Component {
 
     const transaction = new BurgerTransaction(_from, this.state.rawTransaction.to, this.state.rawTransaction.value, this.state.rawTransaction.fee, dateCreated, this.state.rawTransaction.data, senderPubKey);
     const response = await this.state.burgerWallet.send(transaction);
-    console.log(transaction);
-    alert(response.data);
+    alert(response.data.transactionDataHash);
   }
 
   async getBalance(address) {

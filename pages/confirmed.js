@@ -4,7 +4,9 @@ import Divider, { Button, Icon, Label, Menu, Table, Input } from 'semantic-ui-re
 import axios from 'axios'
 import Link from 'next/link'
 import Loader from 'react-loader-spinner'
-import url from './host'
+import host from './host'
+
+const url = host.node
 
 export default class extends React.Component { 
   constructor (props) {

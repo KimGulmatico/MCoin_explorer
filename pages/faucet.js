@@ -3,7 +3,9 @@ import Router from 'next/router'
 import { Message, Input, Button } from 'semantic-ui-react'
 import axios from 'axios'
 import Link from 'next/link'
-import url from './host'
+import host from './host'
+
+const url = host.faucet
 
 export default class extends React.Component { 
   constructor (props) {
@@ -31,7 +33,7 @@ export default class extends React.Component {
         loading: true,
         response: null,
       })
-      const response = await axios.get(url+'/faucet/'+this.state.address+'/10');
+      const response = await axios.get(url+'/faucet/'+this.state.address);
       console.log(response.data);
       if(response){
         this.setState({
