@@ -11,7 +11,8 @@ export default class extends React.Component {
   constructor (props) {
     super(props)
     this.state = { 
-      loading: false, 
+      loading: false,
+      url: url 
     }
     this.requestMccoin = this.requestMccoin.bind(this);
     
@@ -33,7 +34,7 @@ export default class extends React.Component {
         loading: true,
         response: null,
       })
-      const response = await axios.get(url+'/faucet/'+this.state.address);
+      const response = await axios.get(this.state.url+'/faucet/'+this.state.address);
       console.log(response.data);
       if(response){
         this.setState({
@@ -93,13 +94,22 @@ export default class extends React.Component {
             </div>
             <div className="row" style={{'height': '70px'}}>
             </div>
+            <div className="container" align="center" style={{width: '500px'}}>
             <div className="row">
               <div className="col">
                 <Input fluid focus disabled={this.state.loading} onChange={(e)=>this.setState({address: e.target.value})} placeholder='Address' />
               </div>
-              <div>
-                <Button secondary loading={this.state.loading} onClick={this.requestMccoin}>Send</Button>
+            </div>
+            <div style={{'margin-top': '20px'}} className="row">
+              <div className="col">
+                <Input fluid focus disabled={this.state.loading} value={this.state.url}  onChange={(e)=>this.setState({url: e.target.value})} placeholder='URL' />
               </div>
+            </div>
+            <div style={{'margin-top': '20px'}} className="row">
+              <div align="center" className="col">
+              <Button secondary loading={this.state.loading} onClick={this.requestMccoin}>Request Mccoin</Button>
+              </div>
+            </div>
             </div>
           </div>
         </div>
