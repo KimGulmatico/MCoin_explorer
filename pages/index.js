@@ -1,9 +1,6 @@
 import React from 'react'
-import Router from 'next/router'
-import Divider, { Button, Icon, Label, Menu, Table, Input } from 'semantic-ui-react'
+import { Segment, Sidebar, Button, Icon, Menu, Table, Input } from 'semantic-ui-react'
 import axios from 'axios'
-import Link from 'next/link'
-import Loader from 'react-loader-spinner'
 import host from './host'
 
 const url = host.node
@@ -26,21 +23,19 @@ export default class extends React.Component {
       pendingbalance: '',
       hash: '',
       load: true,
+      visible: false
     }
     this.getAllBlocks = this.getAllBlocks.bind(this);
     this.srchChange = this.srchChange.bind(this); 
     this.search = this.search.bind(this);
     this.getTransactionsandBalanceofAddress = this.getTransactionsandBalanceofAddress.bind(this);
     this.getTransactionbyHash = this.getTransactionbyHash.bind(this);
+    this.toggleSidebar = this.toggleSidebar.bind(this);
   }
 
   // handling escape close
   componentDidMount () {
    this.getAllBlocks();
-  }
-
-  componentWillUnmount () {
-   
   }
 
   async getAllBlocks() {
@@ -97,8 +92,6 @@ export default class extends React.Component {
       }  
   }
 
-
-
   srchChange(e) {
       this.setState({search: e.target.value})
   }
@@ -124,9 +117,15 @@ export default class extends React.Component {
       }
   }
 
+  toggleSidebar() {
+    this.setState({
+      visible: !this.state.visible
+    })
+  }
 
   render () {
-    
+    const visible = this.state.visible;
+
     let allblocks = (
                     <div style={{overflow: 'auto', 'max-width': '100%', 'margin-top': '15px'}}>
                     <Table celled>
@@ -301,6 +300,69 @@ export default class extends React.Component {
                         </div>
                         </div>);
 
+    const content = (
+      <div className="row" style={{'margin-top': '14px'}}>
+        <div className="col-sm-6">
+        <div style={{height: '6px'}}>
+        </div>
+        <span onClick={this.getAllBlocks} style={{'font-family': 'Paytone One', 'font-size': '40px', 'height': '200px'}}>
+          <Icon name="list layout" onClick={this.toggleSidebar} /> Mccoin Explorer
+        </span>
+        </div>
+        <div className="col-sm-6">
+          <div className="container" style={{'margin-right': '0'}}>
+          <div className="row">
+          <div className="col-9">
+          <Input fluid placeholder='Search by Block Number/ Address/ TxHash' onChange={this.srchChange}/>
+          </div>
+          <div className="col-3" style={{'padding': '0'}}>
+          <Button secondary style={{'width': '100%'}} onClick={this.search}>Search</Button>
+          </div>
+          </div>
+          </div>
+        </div>
+      </div>   
+    );
+
+    const app = (
+      <Sidebar.Pushable as={Segment}>
+        <Sidebar
+          as={Menu}
+          animation='overlay'
+          icon='labeled'
+          inverted
+          onHide={this.toggleSidebar}
+          vertical
+          visible={visible}
+          width='thin'
+        >
+          <Menu.Item as='a'>
+            <Icon name='list' onClick={() => {window.location.replace('/pending')}} />
+            Pending Transactions
+          </Menu.Item>
+          <Menu.Item as='a' onClick={() => {window.location.replace('/confirmed')}}>
+            <Icon name='list alternate' />
+            Confirmed Transactions
+          </Menu.Item>
+          <Menu.Item as='a' onClick={() => {window.location.replace('/wallet')}}>
+            <Icon name='id card outline' />
+            Wallet
+          </Menu.Item>
+          <Menu.Item as='a' onClick={() => {window.location.replace('/faucet')}}>
+            <Icon name='tint' />
+            Faucet
+          </Menu.Item>
+        </Sidebar>
+
+        <Sidebar.Pusher dimmed={visible}>
+          <Segment style={{'paddingBottom': '10%'}}>
+            {content}
+            {this.state.show == 'blocks'?allblocks:this.state.show == 'transactions'?transactions:this.state.show == 'transactionsAdrs'?transactionsAdrs:transactionsbyhash}
+          </Segment>
+        </Sidebar.Pusher>
+    </Sidebar.Pushable>
+    );
+
     return (
       <div>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossOrigin="anonymous"/>
@@ -308,31 +370,8 @@ export default class extends React.Component {
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossOrigin="anonymous"/>
         <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan|Paytone+One" rel="stylesheet"/>
         <div className="container" style={{'max-width': '97%'}}>
-        <div className="row" style={{'margin-top': '14px'}}>
-          <div className="col-sm-6">
-          <div style={{height: '6px'}}>
-          </div>
-          <span onClick={this.getAllBlocks} style={{'font-family': 'Paytone One', 'font-size': '40px', 'height': '200px'}}>Mccoin Explorer</span>
-          </div>
-          <div className="col-sm-6">
-            <div className="container" style={{'margin-right': '0'}}>
-            <div className="row">
-            <div className="col-9">
-            <Input fluid placeholder='Search by Block Number/ Address/ TxHash' onChange={this.srchChange}/>
-            </div>
-            <div className="col-3" style={{'padding': '0'}}>
-            <Button secondary style={{'width': '100%'}} onClick={this.search}>Search</Button>
-            </div>
-            </div>
-            </div>
-          </div>
+          {app}
         </div>
-        {this.state.show == 'blocks'?allblocks:this.state.show == 'transactions'?transactions:this.state.show == 'transactionsAdrs'?transactionsAdrs:transactionsbyhash}
-        </div>
-        <br/>
-        <center>
-        
-        </center>
       </div>
     )
   }
