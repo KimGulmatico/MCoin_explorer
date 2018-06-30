@@ -34,27 +34,41 @@ export default class extends React.Component {
         loading: true,
         response: null,
       })
-      const response = await axios.get(this.state.url+'/faucet/'+this.state.address);
-      console.log(response.data);
-      if(response){
+
+      try {
+        const response = await axios.get(this.state.url+'/faucet/'+this.state.address);
+        console.log(response.data)
+        if(response){
+          this.setState({
+            loading: false,
+            response: response.data,
+            show: false,
+            render: true,
+          })
+          if(response.data === 'Request accepted!'){
+            this.setState({
+              positive: true,
+            })
+          }
+          else{
+            this.setState({
+              negative: true,
+            })
+          }
+          setTimeout(function() { //Start the timer
+              this.setState({render: false}) //After 1 second, set render to true
+          }.bind(this), 5000)
+        }
+      } catch (e) {
         this.setState({
           loading: false,
-          response: response.data,
+          response: 'Error: ' + e.message,
           show: false,
           render: true,
+          negative: true
         })
-        if(response.data === 'Request accepted!'){
-          this.setState({
-            positive: true,
-          })
-        }
-        else{
-          this.setState({
-            negative: true,
-          })
-        }
         setTimeout(function() { //Start the timer
-            this.setState({render: false}) //After 1 second, set render to true
+          this.setState({render: false}) //After 1 second, set render to true
         }.bind(this), 5000)
       }
   }
