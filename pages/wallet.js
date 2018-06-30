@@ -71,8 +71,13 @@ export default class extends React.Component {
     let _from = this.state.burgerWallet.address;
 
     const transaction = new BurgerTransaction(_from, this.state.rawTransaction.to, this.state.rawTransaction.value, this.state.rawTransaction.fee, dateCreated, this.state.rawTransaction.data, senderPubKey);
-    const response = await this.state.burgerWallet.send(transaction);
-    alert(response.data.transactionDataHash);
+    let response;
+    try {
+      response = await this.state.burgerWallet.send(transaction);
+      alert('Transaction sent!\n' + response.data.transactionDataHash);
+    } catch (e) {
+      alert(e.message);
+    }
   }
 
   async getBalance(address) {
