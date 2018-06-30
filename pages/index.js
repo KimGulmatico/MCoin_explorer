@@ -13,7 +13,9 @@ export default class extends React.Component {
       transactions: [],
       transactionAdrs: [],
       transactionHash: [],
-      page:10,
+      page: 1,
+      itemsPerPage: 10,
+      totalItems: 0,
       index: null,
       show: 'blocks',
       search: '',
@@ -45,6 +47,7 @@ export default class extends React.Component {
           blocks: response.data,
           show: 'blocks',
           load: false,
+          totalItems: response.data.length
         })
       }   
   }
@@ -144,7 +147,7 @@ export default class extends React.Component {
                       <Table.Body>
                       {
                         this.state.blocks.map((block) => 
-                          (parseInt(block.index) <= this.state.page)?
+                          (parseInt(block.index) <= (this.state.page * this.state.itemsPerPage)) && (parseInt(block.index) > ((this.state.page * this.state.itemsPerPage) - 10))?
                             <Table.Row key={block.index}>
                               <Table.Cell>{block.index}</Table.Cell>
                               <Table.Cell><p style={{color: '#3498db'}} onClick={()=>{this.setState({index: block.index, show: 'transactions', load: true}); this.getBlocksTransactions(block.index)}}>{block.transactions.length}</p></Table.Cell>
@@ -163,20 +166,17 @@ export default class extends React.Component {
                           <Table.HeaderCell colSpan='8'>
                             <Menu floated='right' pagination>
                               <Menu.Item as='a' icon>
-                                <Icon name='chevron left' />
+                                <Icon name='chevron left' onClick={() => {this.setState({
+                                  page: this.state.page - 1 <= 1 ? 1 : this.state.page - 1
+                                })}} />
                               </Menu.Item>
-                              <Menu.Item as='a'>1</Menu.Item>
-                              {
-                              this.state.blocks.map((block) => {
-                                if(parseInt(block.index) == this.state.page){
-                                  <Menu.Item as='a'>{block.index + 1}</Menu.Item>
-                                  //this.setState({page: this.state.page+10})
-                                }
-                                null
-                              })
-                              }
+                              <Menu.Item as='a'>
+                                {this.state.page}
+                              </Menu.Item>
                               <Menu.Item as='a' icon>
-                                <Icon name='chevron right' />
+                                <Icon name='chevron right' onClick={() => {this.setState({
+                                  page: ((this.state.page + 1) <= Math.ceil(this.state.totalItems/this.state.itemsPerPage)) ? this.state.page + 1: this.state.page
+                                })}} />
                               </Menu.Item>
                             </Menu>
                           </Table.HeaderCell>
@@ -205,7 +205,7 @@ export default class extends React.Component {
                           <Table.Body>
                           {
                             this.state.transactions.map((trans) => 
-                                <Table.Row>
+                                <Table.Row key={trans.transactionDataHash}>
                                   <Table.Cell>{trans.from}</Table.Cell>
                                   <Table.Cell>{trans.to}</Table.Cell>
                                   <Table.Cell>{trans.value}</Table.Cell>
@@ -246,7 +246,7 @@ export default class extends React.Component {
                         <Table.Body>
                         {
                           this.state.transactionAdrs.map((trans) => 
-                              <Table.Row>
+                              <Table.Row key={trans.transactionDataHash}>
                                 <Table.Cell>{trans.from}</Table.Cell>
                                 <Table.Cell>{trans.to}</Table.Cell>
                                 <Table.Cell>{trans.value}</Table.Cell>
