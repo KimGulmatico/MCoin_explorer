@@ -145,9 +145,24 @@ export default class extends React.Component {
                         </Table.Row>
                       </Table.Header>
                       <Table.Body>
+                        {/* {
+                          this.state.blocks.length === 1 ?
+                          <Table.Row key={this.state.blocks[0].index}>
+                              <Table.Cell>{this.state.blocks[0].index}</Table.Cell>
+                              <Table.Cell><p style={{color: '#3498db'}} onClick={()=>{this.setState({index: block.index, show: 'transactions', load: true}); this.getBlocksTransactions(block.index)}}>{this.state.blocks[0].transactions.length}</p></Table.Cell>
+                              <Table.Cell>{this.state.blocks[0].difficulty}</Table.Cell>
+                              <Table.Cell>{this.state.blocks[0].minedBy}</Table.Cell>
+                              <Table.Cell>{this.state.blocks[0].blockDataHash}</Table.Cell>
+                              <Table.Cell>{this.state.blocks[0].nonce}</Table.Cell>
+                              <Table.Cell>{this.state.blocks[0].dateCreated}</Table.Cell>
+                              <Table.Cell>{this.state.blocks[0].blockHash}</Table.Cell>
+                            </Table.Row>
+                            : undefined
+                        } */}
+
                       {
                         this.state.blocks.map((block) => 
-                          (parseInt(block.index) <= (this.state.page * this.state.itemsPerPage)) && (parseInt(block.index) > ((this.state.page * this.state.itemsPerPage) - 10))?
+                          (parseInt(block.index) <= (this.state.page * this.state.itemsPerPage)) && (parseInt(block.index) >= ((this.state.page * this.state.itemsPerPage) - 10))?
                             <Table.Row key={block.index}>
                               <Table.Cell>{block.index}</Table.Cell>
                               <Table.Cell><p style={{color: '#3498db'}} onClick={()=>{this.setState({index: block.index, show: 'transactions', load: true}); this.getBlocksTransactions(block.index)}}>{block.transactions.length}</p></Table.Cell>
@@ -158,7 +173,7 @@ export default class extends React.Component {
                               <Table.Cell>{block.dateCreated}</Table.Cell>
                               <Table.Cell>{block.blockHash}</Table.Cell>
                             </Table.Row>
-                            :null)
+                            : undefined)
                       }
                       </Table.Body>
                       <Table.Footer>
